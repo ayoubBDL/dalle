@@ -25,7 +25,7 @@ export const Home = () => {
     const fetchPosts = async ()=>{
       setLoading(true)
       try {
-        const response = await fetch('https://dall-e-4bbf.onrender.com/api/v1/post',{
+        const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/post`,{
           method:'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export const Home = () => {
 
     fetchPosts()
   },[])
-
+  
   const handleSearchChange = (e) =>{
     clearTimeout(searchTimeout)
     setSearchText(e.target.value)

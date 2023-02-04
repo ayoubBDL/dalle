@@ -56,7 +56,7 @@ export const CreatePost = () => {
     if(form.prompt){
       try {
         setGeneratingImg(true)
-        const response = await fetch('https://dall-e-4bbf.onrender.com/api/v1/dalle',{
+        const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/dalle`,{
           method:'POST',
           headers:{
             'Content-Type':'application/json'
