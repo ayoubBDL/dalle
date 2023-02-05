@@ -1,16 +1,28 @@
-import express from "express";
-import * as dotenv from 'dotenv'
-import {Configuration, OpenAIApi} from 'openai'
+const express = require('express')
+require('dotenv').config();
+const fs = require('fs');
+const multer = require('multer')
 
- 
 
-dotenv.config()
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uploads/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '.png') //Appending .png
+    }
+  })
+const upload = multer({storage})
+
+const { Configuration, OpenAIApi } = require("openai");
+
 
 const router = express.Router()
 
 const configuration = new Configuration({
     apiKey:process.env.OPENAI_API_KEY
 })
+
 
 const openai = new OpenAIApi(configuration)
 
@@ -39,4 +51,29 @@ router.route('/').post(async (req,res)=>{
     }
 })
 
-export default router
+
+router.route('/variations').post(upload.single('image'),async (req,res)=>{
+    const {numberImages} = req.body
+    try {
+        const reader = fs.createReadStream(`uploads/${req.file.filename}`)
+        const response = await openai.createImageVariation(
+            reader,
+            parseInt(numberImages),
+            "1024x1024"
+          );
+        res.status(200).json({
+            images:response.data.data
+        })
+    } catch (error) {
+        res.status(500).json({error})
+        if (error.response) {
+            res.status(500).json({error})
+            console.log(error.response.status);
+            console.log(error.response.data);
+        } else {
+          console.log(error.message);
+        }
+      }
+})
+
+module.exports = router
