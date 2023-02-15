@@ -2,7 +2,7 @@ import React from 'react'
 import {BrowserRouter, Link, Route, Routes} from 'react-router-dom'
 
 import {logo} from './assets'
-import { Home, CreatePost, CreateVariations } from './pages'
+import { Home, CreatePost, CreateVariations, RemoveBg } from './pages'
 
 export default function App() {
   return (
@@ -12,17 +12,21 @@ export default function App() {
           <img src={logo} alt="logo" className="w-28 object-contain" />
         </Link>
         <div>
-          <Link to={"/create-post"} className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md mx-4">
+          <Link to={"/create-post"} className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md">
             Create
           </Link>
-          <Link to={"/create-variations"} className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md">
+          <Link to={"/create-variations"} className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md mx-4">
             Create Variations
+          </Link>
+          <Link to={"/removebg"} className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md">
+            Remove Background
           </Link>
         </div>
       </header>
       <main className='sm:p-8 px-4 py-8 w-full bg-[#f9fafe] min-h-[calc(100vh-73px)]'>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/removebg' element={<RemoveBg />} />
           <Route path='/create-post' element={<CreatePost />} />
           <Route path='/create-variations' element={<CreateVariations />} />
         </Routes>
