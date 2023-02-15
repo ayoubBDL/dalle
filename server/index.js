@@ -7,6 +7,7 @@ const connectDB  = require("./mongodb/connect.js");
 const postRoutes  = require("./routes/postRoutes.js")
 const dalleRoutes  = require("./routes/dalleRoutes.js")
 const removebgRoutes  = require("./routes/removebgRoutes.js")
+const upscaleRoutes  = require("./routes/upscaleRoutes.js")
 
 
 const app = express()
@@ -20,6 +21,7 @@ app.use(express.static(__dirname));
 app.use('/api/v1/post', postRoutes)
 app.use('/api/v1/dalle', dalleRoutes)
 app.use('/api/v1/removebg', removebgRoutes)
+app.use('/api/v1/upscale', upscaleRoutes)
 
 app.get('/', async (req, res)=>{
     res.send('Hello from DALL-E!')

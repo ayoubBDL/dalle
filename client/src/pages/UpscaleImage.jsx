@@ -6,7 +6,7 @@ import { downloadImage } from '../utils'
 import { preview } from '../assets'
 import { FormField, Loader } from '../components'
 
-export const RemoveBg = () => {
+export const UpscaleImage = () => {
   const navigate = useNavigate()
   const [form, setForm] = useState({
     name:'',
@@ -16,33 +16,7 @@ export const RemoveBg = () => {
 
   const [image, setImage] = useState('')
   const [generatingImg, setGeneratingImg] = useState(false)
-  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (form.prompt && form.photo) {
-      setLoading(true);
-      try {
-        const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/post`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ ...form }),
-        });
-
-        await response.json();
-        navigate('/');
-      } catch (err) {
-        alert(err);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      alert('Please generate an image with proper details');
-    }
-  };
 
   const handleChange = (e)=>{
     setForm({...form, [e.target.name]: e.target.value})
@@ -51,21 +25,21 @@ export const RemoveBg = () => {
 
   const generateImage = async ()=>{
     const formData = new FormData()
-    formData.append('image_file', image)
+    formData.append('image', image)
     
     try {
       setGeneratingImg(true)
       
       const response = await axios({
         method: "post",
-        url: `${import.meta.env.VITE_APP_API_URL}/removebg`,
+        url: `${import.meta.env.VITE_APP_API_URL}/upscale`,
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       const data = await response.data
 
-      setForm({...form, photo:`data:image/png;base64,${data.image}`})
+      setForm({...form, photo:`${data.image}`})
     } catch (error) {
       // alert(error)
       console.error(error)
@@ -79,11 +53,11 @@ export const RemoveBg = () => {
   return (
     <section className="max-w-7xl mx-auto">
       <div>
-        <h1 className="font-extrabold text-[#222328] text-[32px]">Remove Background</h1>
-        <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">Remove Background of your image</p>
+        <h1 className="font-extrabold text-[#222328] text-[32px]">Upscale Your Photo</h1>
+        <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">Upscale Your Photo</p>
       </div>
 
-      <form className="mt-16 max-w-3xl" onSubmit={handleSubmit}>
+      <div className="mt-16 max-w-3xl">
         <div className="flex flex-col gap-5">
 
           <input
@@ -141,7 +115,7 @@ export const RemoveBg = () => {
           <img src={download} alt="download" className="w-6 h-6 object-contain invert" />
         </button>
 
-      </form>
+      </div>
     </section>
   )
 }
