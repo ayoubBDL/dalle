@@ -16,6 +16,7 @@ export const UpscaleImage = () => {
 
   const [image, setImage] = useState('')
   const [generatingImg, setGeneratingImg] = useState(false)
+  const [beforeAfter, setBeforeAfter] = useState(false)
 
 
   const handleChange = (e)=>{
@@ -45,16 +46,21 @@ export const UpscaleImage = () => {
       console.error(error)
     }
     finally{
+      setBeforeAfter(true)
       setGeneratingImg(false)
     }
     
+  }
+
+  const toggleBeforeAfter = ()=>{
+    setBeforeAfter(!beforeAfter)
   }
 
   return (
     <section className="max-w-7xl mx-auto">
       <div>
         <h1 className="font-extrabold text-[#222328] text-[32px]">Upscale Your Photo</h1>
-        <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">Upscale Your Photo</p>
+        <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">Upscale Your Photo, accepted format are: PNG and JPG</p>
       </div>
 
       <div className="mt-16 max-w-3xl">
@@ -68,23 +74,36 @@ export const UpscaleImage = () => {
             onChange={handleChange}
             required
           />
-          <div className='flex'>
-            {image && form.photo && <img
-              src={URL.createObjectURL(image)}
-              className="w-64 h-64 object-contain"
-            />}
-          
-          <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
+          {form.photo && <button
+            type="button"
+            onClick={toggleBeforeAfter}
+            className=" text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+          >{beforeAfter?"See Before":"See After"}</button>}
+          <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-70 p-3 h-70 flex justify-center items-center">
             { form.photo ? (
               <>
-                <img
-                src={form.photo}
-                alt={form.prompt}
-                className="w-full h-full object-contain"
-                />
-                
+                {
+                beforeAfter?
+                <div className='flex flex-col'>
+                {/* <p className="mt-2 text-[#666e75] text-[20px] max-w-[500px] my-4 text-center">After</p> */}
+                  <img
+                    src={form.photo}
+                    alt={form.prompt}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                  :
+                <div className='flex flex-col'>
+                {/* <p className="mt-2 text-[#666e75] text-[20px] max-w-[500px] my-4 text-center">Before</p> */}
+                  <img
+                    src={URL.createObjectURL(image)}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              }
+            </>
 
-              </>
+              
             ) : (
               <img
                 src={preview}
@@ -99,7 +118,7 @@ export const UpscaleImage = () => {
               </div>
             )}
           </div>
-          </div>
+          
         </div>
 
         <div className="mt-5 flex gap-5">
