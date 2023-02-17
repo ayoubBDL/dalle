@@ -12,7 +12,7 @@ export default function App() {
           <img src={logo} alt="logo" className="w-28 object-contain" />
         </Link>
         <div>
-          <Link to={"/create-post"} className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md mx-4">
+          <Link to={"/create-image"} className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md mx-4">
             Create
           </Link>
           <Link to={"/create-variations"} className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md mx-4">
@@ -30,7 +30,7 @@ export default function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/removebg' element={<RemoveBg />} />
-          <Route path='/create-post' element={<CreatePost />} />
+          <Route path='/create-image' element={<CreatePost />} />
           <Route path='/create-variations' element={<CreateVariations />} />
           <Route path='/upscale' element={<UpscaleImage />} />
         </Routes>
